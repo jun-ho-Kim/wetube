@@ -1,5 +1,3 @@
 {
-    "presets" : ["@babel/preset-env"],
-    "ignore": [
-        "src/assets/"]
+    "presets" : ["@babel/preset-env"]
 }

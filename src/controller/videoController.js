@@ -12,7 +12,7 @@ export const home = async (req, res) => {
   }
   };
 
-export const search = async(req, res) => {
+export const search = async (req, res) => {
   const {
     query: { term: searchingBy }
   } = req;
@@ -48,7 +48,7 @@ export const postUpload = async(req, res) => {
   res.redirect(routes.videoDetail(newVideo.id));
 };
 
-export const videoDetail = async(req, res) => {
+export const videoDetail = async (req, res) => {
   const {
     params: { id }
   } = req;
@@ -56,14 +56,14 @@ export const videoDetail = async(req, res) => {
     const video = await Video.findById(id)
     .populate("creator")
     .populate("comments");
-    // req.user.save()
+    req.user.save()
     res.render("videoDetail", { pageTitle: "Video Detail", video });
   } catch(error) {
     res.redirect(routes.home);
   }
 };
 
-export const getEditVideo = async(req, res) => {
+export const getEditVideo = async (req, res) => {
   const {
     params: {id}
   } = req;
@@ -82,7 +82,7 @@ export const getEditVideo = async(req, res) => {
   };
 };
 
-export const postEditVideo = async(req, res) => {
+export const postEditVideo = async (req, res) => {
   const {
     params: {id},
     body: {title, description}
@@ -95,12 +95,13 @@ export const postEditVideo = async(req, res) => {
   }
 };
 
-export const deleteVideo = async(req, res) => {
+export const deleteVideo = async (req, res) => {
   const {
     params : {id}
   } = req;
   try {
-    if(video.creator !== req.user.id) {
+    const video = await Video.findById(id);
+    if(String(video.creator) !== req.user.id) {
       throw Error();
     } else {
       await Video.findOneAndRemove({_id:id});
@@ -148,6 +149,25 @@ export const postAddComment = async (req, res) => {
   }
 };
 
+// export const deleteComment = async (req, res) => {
+//   const {
+//     params : {id},
+//     user
+//   } = req;
+//   try {
+//   const comment = await Comment.findById(id);
+//   if(String(comment.creator) !== user.id) {
+//     throw Error();
+//   } else {
+//     await comment.findOneAndRemove({_id:id});
+//     comment.save();
+//   }
+//   }catch (error) {
+//     res.status(400);
+//   } finally {
+//     res.end();
+//   }
+// };
 
 // export const postRegisterView = async (req, res) => {
 //   const {

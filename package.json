@@ -20,6 +20,7 @@
     "cookie-parse": "^0.4.0",
     "cookie-parser": "^1.4.4",
     "core-js": "^3.6.4",
+    "cross-env": "^7.0.2",
     "css-loader": "^3.4.2",
     "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
@@ -46,13 +47,13 @@
   },
   "scripts": {
     "dev:server": "nodemon --exec babel-node src/init.js --delay 2 --ignore '.scss' --ignore 'static' ",
-    "dev:assets": "cd src && set WEBPACK_ENV=development webpack -w",
-    "build:assets": "cd src && set WEBPACK_ENV=production webpack",
+    "dev:assets": "cd src && cross-env WEBPACK_ENV=development webpack -w",
+    "build:assets": "cd src && cross-env WEBPACK_ENV=production webpack",
     "build:server": "babel src --out-dir build",
-    "copyAll": "cp -R src/static build && cp -R src/views build",
+    "copyAll": "xcopy .\\src\\static .\\build\\static\\ /s /y && xcopy .\\src\\views .\\build\\views\\ /s /y",
     "build": "npm run build:server && npm run build:assets && npm run copyAll",
     "tunnel": "lt --port 4000",
-    "start": "PRODUCTION=true node build/init.js",
+    "start": "node build/init.js",
     "prestart": "npm run build"
   },
   "devDependencies": {
